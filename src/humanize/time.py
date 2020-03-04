@@ -135,7 +135,20 @@ def naturaldelta(value, months=True, minimum_unit="seconds"):
         else:
             return ngettext("1 year, %d day", "1 year, %d days", days) % days
     else:
-        return ngettext("%d year", "%d years", years) % years
+        if not months and not days:
+            return _("%d years", years)
+        elif not months:
+            return ngettext("%d years, %d day", "%d years, %d days", years, days) % days
+        elif use_months:
+            if months == 1:
+                return _("%d years, 1 month", years)
+            else:
+                return (
+                    ngettext("%d years, %d month", "%d years, %d months", years, months) % months
+                )
+        else:
+            return ngettext("%d years, %d day", "%d years, %d days", years, days) % days
+        
 
 
 def naturaltime(value, future=False, months=True, minimum_unit="seconds"):
